@@ -164,7 +164,6 @@ button {
 <script>
 
 const quizData = [
-
 {
 question:"What is the primary purpose of IDMT?",
 options:[
@@ -174,9 +173,8 @@ options:[
 "To send automated notifications"
 ],
 correct:0,
-explanation:"IDMT removes or cleanses existing data in a controlled and auditable way. When a rule runs, it removes selected data and can leave the field blank, apply Data Removed, or use a defined replacement value."
+explanation:"IDMT removes or cleanses existing data in a controlled and auditable way."
 },
-
 {
 question:"A Test run returns 2,450 records. What should be done before running the rule live?",
 options:[
@@ -186,9 +184,8 @@ options:[
 "Disable audit"
 ],
 correct:2,
-explanation:"A large result set should prompt review. Confirm that the volume and selection criteria are correct before applying permanent updates."
+explanation:"A large result set should prompt review before applying permanent updates."
 },
-
 {
 question:"What must a rule contain before it can run?",
 options:[
@@ -198,9 +195,8 @@ options:[
 "A scheduled service"
 ],
 correct:1,
-explanation:"A rule requires selection criteria to identify records and at least one action to define what change will occur."
+explanation:"A rule requires selection criteria and at least one action."
 },
-
 {
 question:"An administrator creates a rule with very broad selection criteria and runs it live without testing. What is the most likely outcome?",
 options:[
@@ -210,9 +206,8 @@ options:[
 "The system blocks the update"
 ],
 correct:1,
-explanation:"Broad criteria increase matched records. Without testing first, unintended data removal may occur."
+explanation:"Broad criteria increase the risk of unintended data removal."
 },
-
 {
 question:"When removing data using IDMT, what replacement options are available?",
 options:[
@@ -222,11 +217,10 @@ options:[
 "Automatically archive the field"
 ],
 correct:2,
-explanation:"Removed data can leave the field blank, show Data Removed, or use a defined replacement value."
+explanation:"Removed data can be left blank, show Data Removed, or use a defined value."
 },
-
 {
-question:"A Test run returns zero records, but several matches were expected. What should be reviewed first?",
+question:"A Test run returns zero records. What should be reviewed first?",
 options:[
 "The selection criteria",
 "The audit table",
@@ -234,9 +228,8 @@ options:[
 "The HTML formatting"
 ],
 correct:0,
-explanation:"If no records are returned, the most likely cause is that the criteria do not match any current data."
+explanation:"Review the selection criteria to ensure it matches current data."
 },
-
 {
 question:"Why is the Audit feature important in IDMT?",
 options:[
@@ -246,21 +239,19 @@ options:[
 "It reduces database size"
 ],
 correct:1,
-explanation:"Audit provides traceability by recording what changes were made, when, and by which rule."
+explanation:"Audit provides traceability of all changes."
 },
-
 {
-question:"An administrator creates a rule using KEYVAL to remove all related contact records for a specific case. What will be removed when the rule runs?",
+question:"An administrator creates a rule using KEYVAL to remove all related contact records for a specific case. What will be removed?",
 options:[
-"Only the email field within each contact",
+"Only the email field",
 "The entire contact records linked to that case",
 "The case itself",
 "The audit history"
 ],
 correct:1,
-explanation:"When KEYVAL targets related records in a child table such as Contacts, the rule removes the entire matching rows."
+explanation:"KEYVAL targeting a child table removes entire related records."
 },
-
 {
 question:"Why should rules be clearly named and documented?",
 options:[
@@ -270,21 +261,19 @@ options:[
 "To reduce audit entries"
 ],
 correct:1,
-explanation:"Clear naming ensures other administrators understand the purpose and scope of each rule."
+explanation:"Clear naming supports governance and system transparency."
 },
-
 {
-question:"A rule appears to remain in Running status longer than expected. What should be considered before escalating?",
+question:"A rule remains in Running status longer than expected. What should be considered?",
 options:[
 "The system has crashed",
 "The audit has failed",
 "The dataset being processed may be large",
-"The rule has deleted itself"
+"The rule deleted itself"
 ],
 correct:2,
-explanation:"Large datasets increase processing time. Confirm the volume before assuming a fault."
+explanation:"Large datasets increase processing time."
 },
-
 {
 question:"When is IDMT most appropriate to use?",
 options:[
@@ -294,11 +283,10 @@ options:[
 "For resetting user passwords"
 ],
 correct:2,
-explanation:"IDMT is most appropriate for structured removal or cleansing across multiple records."
+explanation:"IDMT is best for structured data cleansing across multiple records."
 },
-
 {
-question:"An administrator removes data but chooses to leave the replacement field blank. What will be stored in that field?",
+question:"An administrator removes data and leaves the replacement field blank. What is stored?",
 options:[
 "Data Removed",
 "The previous value",
@@ -306,9 +294,8 @@ options:[
 "An audit reference number"
 ],
 correct:2,
-explanation:"If no replacement value is selected, the field is left blank. The audit still records the removal."
+explanation:"If no replacement value is selected, the field remains blank."
 },
-
 {
 question:"What happens when a rule is run live after testing?",
 options:[
@@ -318,11 +305,10 @@ options:[
 "The rule disables itself"
 ],
 correct:1,
-explanation:"Running live applies the defined action to all matched records and records the update in the audit trail."
+explanation:"Live execution permanently applies the defined action and records it in audit."
 },
-
 {
-question:"After running a rule live, an administrator wants to confirm exactly which records were changed. Where should they look?",
+question:"After running a rule live, where can an administrator confirm what changed?",
 options:[
 "The email server",
 "The system scheduler",
@@ -330,12 +316,83 @@ options:[
 "The user permissions screen"
 ],
 correct:2,
-explanation:"The Audit log provides a full record of what was changed and when."
+explanation:"The Audit log records exactly which records were updated."
 }
-
 ];
 
 let current = 0;
 let score = 0;
 
-/* Remaining JS unchanged */
+function startQuiz(){
+document.getElementById("intro").style.display="none";
+document.getElementById("quiz").style.display="block";
+render();
+}
+
+function render(){
+const q=quizData[current];
+const quiz=document.getElementById("quiz");
+
+quiz.innerHTML=`
+<div class="question-number">Question ${current+1} of ${quizData.length}</div>
+<div class="question">${q.question}</div>
+${q.options.map((o,i)=>`<div class="option" onclick="selectOption(${i})">${o}</div>`).join("")}
+<div class="feedback" id="feedback"></div>
+<div class="buttons">
+<button class="btn-secondary" onclick="prev()" ${current===0?"disabled":""}>Previous</button>
+<button class="btn-primary" id="nextBtn" disabled onclick="next()">Next</button>
+</div>
+`;
+
+document.getElementById("progressFill").style.width=((current+1)/quizData.length*100)+"%";
+}
+
+function selectOption(i){
+const opts=document.querySelectorAll(".option");
+const fb=document.getElementById("feedback");
+opts.forEach(o=>o.classList.add("disabled"));
+
+if(i===quizData[current].correct){
+opts[i].classList.add("correct");
+fb.className="feedback correct";
+fb.textContent="Correct – "+quizData[current].explanation;
+score++;
+}else{
+opts[i].classList.add("incorrect");
+opts[quizData[current].correct].classList.add("correct");
+fb.className="feedback incorrect";
+fb.textContent="Incorrect – "+quizData[current].explanation;
+}
+
+fb.style.display="block";
+document.getElementById("nextBtn").disabled=false;
+}
+
+function next(){
+if(current<quizData.length-1){
+current++;
+render();
+}else{
+showResults();
+}
+}
+
+function prev(){
+current--;
+render();
+}
+
+function showResults(){
+document.getElementById("quiz").style.display="none";
+const r=document.getElementById("results");
+r.style.display="block";
+r.innerHTML=`
+<h2>Knowledge Check Complete</h2>
+<div class="score">${score} out of ${quizData.length}</div>
+<p>Thank you for attending Idox training</p>
+`;
+}
+
+</script>
+</body>
+</html>

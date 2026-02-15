@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Enterprise Plus – Knowledge Check</title>
+<title>IDMT – Knowledge Check</title>
 
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -128,7 +128,7 @@ button {
 <div class="container">
 
 <header>
-  <h1>Enterprise Plus – Knowledge Check</h1>
+  <h1>IDMT – Knowledge Check</h1>
   <p>Idox Training</p>
 </header>
 
@@ -137,20 +137,20 @@ button {
 </div>
 
 <div class="content" id="intro">
-  <h2 style="color:#1e3c72;margin-bottom:15px;">Enterprise Plus – Knowledge Check</h2>
+  <h2 style="color:#1e3c72;margin-bottom:15px;">IDMT – Knowledge Check</h2>
 
   <p style="margin-bottom:12px;">
-    You’ve now successfully completed the Enterprise Plus training.
+    You’ve now successfully completed the IDMT training.
   </p>
 
   <p style="margin-bottom:12px;">
-    This short knowledge check helps reinforce the key points covered during the training,
-    including auto emails, CoreComms, and Core Services.
+    This short knowledge check reinforces how IDMT rules operate in practice,
+    including selection criteria, actions, testing, audit and shared service considerations.
   </p>
 
   <p style="margin-bottom:20px;">
-    Choose the answer that best reflects how the system works in practice.
-    You’ll see brief feedback after each question.
+    Choose the answer that best reflects how the system works in real scenarios.
+    You’ll see instructional feedback after each question.
   </p>
 
   <button class="btn-primary" onclick="startQuiz()">Start knowledge check</button>
@@ -162,266 +162,258 @@ button {
 </div>
 
 <script>
+
 const quizData = [
-  {
-    question:"In Enterprise auto emails, what is the main purpose of a sweep clause?",
-    options:[
-      "To control when the email schedule runs",
-      "To make sure only records with a valid email address and the right conditions are included",
-      "To format the content of the email",
-      "To record the email in the system after it is sent"
-    ],
-    correct:1,
-    explanation:"A sweep clause acts as a safety filter. It ensures only records that meet specific conditions, such as having a valid email address and correct contact type, are picked up. Without it, the task may attempt to send emails to blank or invalid recipients and fail."
-  },
-  {
-    question:"An auto email runs, but no emails are sent. The sweep clause includes LIKE('%@%'). Why?",
-    options:[
-      "The email body contains HTML",
-      "The task definition ID has not been set",
-      "No valid email address was found",
-      "The email server is unavailable"
-    ],
-    correct:2,
-    explanation:"LIKE('%@%') checks that the email field contains an @ symbol, acting as a basic validity check. If no records meet that condition, the sweep clause returns nothing, so the task runs but no emails are triggered."
-  },
-  {
-    question:"Where is automatic email activity stored for reporting?",
-    options:[
-      "User mailbox",
-      "CoreComms output",
-      "AETASK table",
-      "EMAIL_LOG"
-    ],
-    correct:2,
-    explanation:"Each auto email creates a record in the AETASK table when it runs. This allows you to audit what was sent, when it was sent, and for which case. It is essential for reporting and tracking activity."
-  },
-  {
-    question:"Auto email code runs at the Inspections level and retrieves three inspections. What happens?",
-    options:[
-      "No emails are sent",
-      "Three separate emails are sent",
-      "One email is sent",
-      "Two emails are sent"
-    ],
-    correct:1,
-    explanation:"When code runs from a lower level table such as Inspections or Actions, it executes once per record returned. If three inspections meet the sweep clause, the email logic runs three times, producing three separate emails."
-  },
-  {
-    question:"Which C# data type is used to store text in auto email code?",
-    options:[
-      "Integer",
-      "Boolean",
-      "Array",
-      "String"
-    ],
-    correct:3,
-    explanation:"Strings are used to hold and format text such as names, addresses and dates in email content. They also allow you to clean or format values before inserting them into the email body."
-  },
-  {
-    question:"An auto email checks AETASK using TASKDEFID and finds a match. What happens?",
-    options:[
-      "The email is sent again",
-      "The email is not sent again",
-      "The process errors",
-      "A duplicate email is sent"
-    ],
-    correct:1,
-    explanation:"The system checks AETASK using TASKDEFID to see whether that specific auto email has already been logged for the case. If a matching record exists, the email is not sent again, preventing duplicate emails."
-  },
-  {
-    question:"Which HTML tag creates paragraphs in an email body?",
-    options:[
-      "&lt;strong&gt;",
-      "&lt;div&gt;",
-      "&lt;p&gt;",
-      "&lt;em&gt;"
-    ],
-    correct:2,
-    explanation:"The <p> tag separates text into structured paragraphs. In emails, this improves readability and prevents content appearing as one long block of text."
-  },
-  {
-    question:"In an HTML email, what does the &lt;strong&gt; tag do to text?",
-    options:[
-      "Makes text bold and denotes importance",
-      "Underlines text",
-      "Italicises text",
-      "Hides text"
-    ],
-    correct:0,
-    explanation:"The <strong> tag highlights important information, typically by displaying it in bold. It helps draw attention to key details such as references, dates or addresses."
-  },
-  {
-    question:"Which CoreComms feature allows working-day calculations?",
-    options:[
-      "Output settings",
-      "Calculated Fields",
-      "Query Builder",
-      "Field naming"
-    ],
-    correct:1,
-    explanation:"Calculated Fields allow you to derive new values from existing data, such as calculating working days between two dates. This avoids exporting data elsewhere for manual calculation."
-  },
-  {
-    question:"A CoreComms report previews but does not email. What should you check first?",
-    options:[
-      "Calculated fields exist",
-      "Output is enabled",
-      "Query returns data",
-      "Security tags"
-    ],
-    correct:1,
-    explanation:"Previewing only confirms that the query works. For emails to send automatically, the Output section must be configured and the Enabled box ticked. Otherwise the report will not generate email output."
-  },
-  {
-    question:"Which scheduling options exist in Core Services?",
-    options:[
-      "Manual / automatic",
-      "Daily / weekly",
-      "Immediate / delayed",
-      "Continuously, every X minutes, fixed times, fixed dates"
-    ],
-    correct:3,
-    explanation:"Core Services supports multiple scheduling types to suit different automation needs. These include continuous runs, interval based runs, and fixed time or fixed date schedules."
-  },
-  {
-    question:"Month blank, Day 1 and 15, Hour 7. When does it run?",
-    options:[
-      "Manually only",
-      "1 Jan and 15 Jan only",
-      "1st and 15th of every month at 7am",
-      "Every day at 7am"
-    ],
-    correct:2,
-    explanation:"Leaving Month blank acts as a wildcard, meaning every month. Combined with Day 1 and 15 and Hour 7, the task runs at 7am on the 1st and 15th of every month."
-  },
-  {
-    question:"What does the Job Status Key show?",
-    options:[
-      "Database connections",
-      "Meaning of task status icons",
-      "System performance",
-      "User permissions"
-    ],
-    correct:1,
-    explanation:"The Job Status Key explains what each service icon represents, such as running, successful, or error. It helps you quickly interpret whether scheduled tasks are operating correctly."
-  },
-  {
-    question:"A task shows an error icon. What does this mean?",
-    options:[
-      "Task disabled",
-      "Task successful",
-      "Task ran but failed",
-      "Task not run"
-    ],
-    correct:2,
-    explanation:"An error icon means the task attempted to run but encountered a failure. This usually requires checking logs or configuration settings to identify and resolve the issue."
-  }
+
+{
+question:"What is the primary purpose of IDMT?",
+options:[
+"To run system backups",
+"To automatically update, insert or correct data using defined rules",
+"To replace Core Services scheduling",
+"To send automated emails"
+],
+correct:1,
+explanation:"IDMT allows you to create controlled rules that update, insert or correct data within Uniform. It is designed to manage data quality and consistency across modules in a structured way."
+},
+
+{
+question:"What must a rule contain before it can run?",
+options:[
+"An audit export",
+"A sweep clause",
+"Selection criteria and at least one action",
+"A DMS link"
+],
+correct:2,
+explanation:"A rule requires selection criteria to identify records and at least one action to define what change will occur. Without both elements, the rule has nothing to process."
+},
+
+{
+question:"What is the purpose of running a Test before running a Rule?",
+options:[
+"To permanently update records",
+"To preview which records will be affected without applying changes",
+"To delete invalid data",
+"To improve performance"
+],
+correct:1,
+explanation:"A Test run allows you to review which records meet the criteria before any updates are applied. This helps validate logic and reduces the risk of unintended data changes."
+},
+
+{
+question:"If a rule is left in Running status for an extended period, what should you check first?",
+options:[
+"The email server",
+"Whether the rule is processing a large dataset",
+"User permissions",
+"DMS configuration"
+],
+correct:1,
+explanation:"Large datasets can extend processing time. Always confirm whether the rule is still actively processing before assuming there is a system issue."
+},
+
+{
+question:"Why is the Audit feature important in IDMT?",
+options:[
+"It improves rule speed",
+"It records who made changes and what was changed",
+"It prevents users accessing rules",
+"It deletes old rules"
+],
+correct:1,
+explanation:"The Audit feature provides traceability. It records what data was changed, when it changed and which rule applied the update, supporting accountability and troubleshooting."
+},
+
+{
+question:"In a Shared Services environment, what must be carefully configured?",
+options:[
+"The server clock",
+"The rule scope and authority filters",
+"The HTML format",
+"The report layout"
+],
+correct:1,
+explanation:"In Shared Services, rules must be scoped correctly using authority filters to ensure changes apply only to the intended authority and do not affect other councils."
+},
+
+{
+question:"What happens if selection criteria are too broad?",
+options:[
+"The rule will not run",
+"More records than intended may be updated",
+"The rule deletes itself",
+"The system blocks the rule"
+],
+correct:1,
+explanation:"Broad criteria increase the number of matched records. This can result in unintended updates, which is why testing and careful filtering are critical."
+},
+
+{
+question:"Why should rules be clearly named and documented?",
+options:[
+"To make them run faster",
+"To avoid duplicate system tables",
+"To support governance and future review",
+"To enable DMS integration"
+],
+correct:2,
+explanation:"Clear naming and documentation support governance, maintenance and audit. Other administrators must be able to understand the purpose and impact of each rule."
+},
+
+{
+question:"What is the risk of running a rule without testing first?",
+options:[
+"It cannot be audited",
+"It may apply unintended changes to live data",
+"It disables the module",
+"It blocks user access"
+],
+correct:1,
+explanation:"Running a rule without testing increases the risk of applying incorrect logic to live records. A Test run helps confirm that only the intended records are targeted."
+},
+
+{
+question:"Why might a rule return zero results during testing?",
+options:[
+"The database is offline",
+"The criteria do not match any current records",
+"The audit table is full",
+"The user is not logged in"
+],
+correct:1,
+explanation:"If no records meet the selection criteria, the Test will return zero results. This usually indicates criteria need reviewing rather than a system error."
+},
+
+{
+question:"What is best practice after running a rule successfully?",
+options:[
+"Immediately delete the rule",
+"Document the outcome and review audit results",
+"Disable all other rules",
+"Restart the server"
+],
+correct:1,
+explanation:"After running a rule, review the audit output and document the result. This ensures the change achieved the intended outcome and supports governance processes."
+},
+
+{
+question:"When should IDMT be used instead of manual updates?",
+options:[
+"When changes affect multiple records and require consistency",
+"For formatting HTML emails",
+"For one off personal tasks",
+"To change user passwords"
+],
+correct:0,
+explanation:"IDMT is designed for structured, repeatable updates across multiple records. It ensures consistency and reduces manual error when applying controlled data changes."
+}
+
 ];
 
 let current = 0;
 let score = 0;
 
 function startQuiz(){
-  document.getElementById("intro").style.display = "none";
-  document.getElementById("quiz").style.display = "block";
-  render();
+document.getElementById("intro").style.display = "none";
+document.getElementById("quiz").style.display = "block";
+render();
 }
 
 function render(){
-  const q = quizData[current];
-  const quiz = document.getElementById("quiz");
+const q = quizData[current];
+const quiz = document.getElementById("quiz");
 
-  quiz.innerHTML = `
-    <div class="question-number">Question ${current+1} of ${quizData.length}</div>
-    <div class="question">${q.question}</div>
-    ${q.options.map((o,i)=>`<div class="option" onclick="selectOption(${i})">${o}</div>`).join("")}
-    <div class="feedback" id="feedback"></div>
-    <div class="buttons">
-      <button class="btn-secondary" onclick="prev()" ${current===0?"disabled":""}>Previous</button>
-      <button class="btn-primary" id="nextBtn" disabled onclick="next()">Next</button>
-    </div>
-  `;
+quiz.innerHTML = `
+<div class="question-number">Question ${current+1} of ${quizData.length}</div>
+<div class="question">${q.question}</div>
+${q.options.map((o,i)=>`<div class="option" onclick="selectOption(${i})">${o}</div>`).join("")}
+<div class="feedback" id="feedback"></div>
+<div class="buttons">
+<button class="btn-secondary" onclick="prev()" ${current===0?"disabled":""}>Previous</button>
+<button class="btn-primary" id="nextBtn" disabled onclick="next()">Next</button>
+</div>
+`;
 
-  document.getElementById("progressFill").style.width =
-    ((current+1)/quizData.length*100) + "%";
+document.getElementById("progressFill").style.width =
+((current+1)/quizData.length*100) + "%";
 }
 
 function selectOption(i){
-  const opts = document.querySelectorAll(".option");
-  const fb = document.getElementById("feedback");
-  opts.forEach(o=>o.classList.add("disabled"));
+const opts = document.querySelectorAll(".option");
+const fb = document.getElementById("feedback");
+opts.forEach(o=>o.classList.add("disabled"));
 
-  if(i === quizData[current].correct){
-    opts[i].classList.add("correct");
-    fb.className = "feedback correct";
-    fb.textContent = "Correct – " + quizData[current].explanation;
-    score++;
-  } else {
-    opts[i].classList.add("incorrect");
-    opts[quizData[current].correct].classList.add("correct");
-    fb.className = "feedback incorrect";
-    fb.textContent = "Incorrect – " + quizData[current].explanation;
-  }
+if(i === quizData[current].correct){
+opts[i].classList.add("correct");
+fb.className = "feedback correct";
+fb.textContent = "Correct – " + quizData[current].explanation;
+score++;
+} else {
+opts[i].classList.add("incorrect");
+opts[quizData[current].correct].classList.add("correct");
+fb.className = "feedback incorrect";
+fb.textContent = "Incorrect – " + quizData[current].explanation;
+}
 
-  fb.style.display = "block";
-  document.getElementById("nextBtn").disabled = false;
+fb.style.display = "block";
+document.getElementById("nextBtn").disabled = false;
 }
 
 function next(){
-  if(current < quizData.length - 1){
-    current++;
-    render();
-  } else {
-    showResults();
-  }
+if(current < quizData.length - 1){
+current++;
+render();
+} else {
+showResults();
+}
 }
 
 function prev(){
-  current--;
-  render();
+current--;
+render();
 }
 
 function showResults(){
-  document.getElementById("quiz").style.display = "none";
-  const r = document.getElementById("results");
-  r.style.display = "block";
+document.getElementById("quiz").style.display = "none";
+const r = document.getElementById("results");
+r.style.display = "block";
 
-  r.innerHTML = `
-    <div style="text-align:left; max-width:600px; margin:0 auto;">
-      <h2 style="margin-bottom:20px; color:#2a5298;">
-        Knowledge Check Complete
-      </h2>
+r.innerHTML = `
+<div style="text-align:left; max-width:600px; margin:0 auto;">
+<h2 style="margin-bottom:20px; color:#2a5298;">
+Knowledge Check Complete
+</h2>
 
-      <p style="margin-bottom:16px;">
-        You’ve reached the end of the Enterprise Plus training knowledge check.
-      </p>
+<p style="margin-bottom:16px;">
+You’ve reached the end of the IDMT training knowledge check.
+</p>
 
-      <div style="width:100%; text-align:center; margin:24px 0;">
-        <div class="score" style="display:inline-block;">
-          ${score} out of ${quizData.length}
-        </div>
-      </div>
+<div style="width:100%; text-align:center; margin:24px 0;">
+<div class="score" style="display:inline-block;">
+${score} out of ${quizData.length}
+</div>
+</div>
 
-      <p style="margin-bottom:16px;">
-        This score is intended to help reinforce your understanding of the topics covered during the training,
-        and to highlight any areas that may benefit from further review.
-      </p>
+<p style="margin-bottom:16px;">
+This score reinforces your understanding of IDMT rule creation, testing, audit and governance.
+</p>
 
-      <p style="margin-bottom:24px;">
-        If any areas were unclear, you may wish to revisit the relevant sections of the training materials.
-      </p>
+<p style="margin-bottom:24px;">
+If any areas were unclear, revisit the relevant sections of the IDMT training materials.
+</p>
 
-      <p style="margin-bottom:10px; font-size:1.6em; font-weight:700; color:#2a5298;">
-        Thank you for attending Idox training
-      </p>
+<p style="margin-bottom:10px; font-size:1.6em; font-weight:700; color:#2a5298;">
+Thank you for attending Idox training
+</p>
 
-      <p style="margin-bottom:0;">
-        If you’d like to explore further training courses, please speak to your Idox account manager.
-      </p>
-    </div>
-  `;
+<p style="margin-bottom:0;">
+If you’d like to explore further training courses, please speak to your Idox account manager.
+</p>
+</div>
+`;
 }
+
 </script>
 </body>
 </html>
